@@ -6,7 +6,7 @@ import { TransactionList } from "@/components/finance/TransactionList";
 import { DashboardSkeleton } from "@/components/finance/DashboardSkeleton";
 import { IOSPageHeader } from "@/components/ui/IOSPageHeader";
 import Link from "next/link";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, Settings } from "lucide-react";
 
 async function DashboardContent() {
   const session = await auth();
@@ -30,6 +30,15 @@ async function DashboardContent() {
       <IOSPageHeader
         title={`Hi, ${firstName} 👋`}
         subtitle="Here's your financial summary"
+        action={
+          <Link
+            href="/settings"
+            aria-label="Open settings"
+            className="flex h-11 w-11 items-center justify-center rounded-full bg-white text-[#007AFF] shadow-sm ring-1 ring-black/5 transition-transform active:scale-95"
+          >
+            <Settings aria-hidden="true" className="h-5 w-5" />
+          </Link>
+        }
       />
       <BalanceCard
         balance={stats.balance}
