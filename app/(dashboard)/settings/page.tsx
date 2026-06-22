@@ -1,8 +1,10 @@
 import { Suspense } from "react";
 import { auth, signOut } from "@/lib/auth";
+import { getUserCurrency } from "@/lib/data";
 import { IOSCard } from "@/components/ui/IOSCard";
 import { IOSPageHeader } from "@/components/ui/IOSPageHeader";
 import { Skeleton } from "@/components/ui/Skeleton";
+import { CurrencyPicker } from "@/components/ui/CurrencyPicker";
 import { ChevronRight, LogOut, User, Bell, Shield } from "lucide-react";
 
 async function UserProfile() {
@@ -36,6 +38,43 @@ function ProfileSkeleton() {
   );
 }
 
+async function PreferencesSection() {
+  const session = await auth();
+  const currency = session?.user?.id
+    ? await getUserCurrency(session.user.id)
+    : "USD";
+
+  return (
+    <div>
+      <p className="text-xs font-semibold text-[#8E8E93] uppercase tracking-wider px-1 mb-2">
+        Preferences
+      </p>
+      <IOSCard padding={false}>
+        <CurrencyPicker current={currency} />
+        <div className="h-px bg-[#F2F2F7] ml-[60px]" />
+        {[
+          { icon: Bell, label: "Notifications", color: "#FF9500" },
+          { icon: Shield, label: "Privacy & Security", color: "#34C759" },
+        ].map(({ icon: Icon, label, color }, i, arr) => (
+          <div key={label}>
+            <div className="flex items-center gap-3 px-4 py-3.5">
+              <div
+                className="w-8 h-8 rounded-lg flex items-center justify-center"
+                style={{ backgroundColor: color + "20" }}
+              >
+                <Icon className="w-4 h-4" style={{ color }} />
+              </div>
+              <span className="flex-1 text-[#1C1C1E] text-sm font-medium">{label}</span>
+              <ChevronRight className="w-4 h-4 text-[#C7C7CC]" />
+            </div>
+            {i < arr.length - 1 && <div className="h-px bg-[#F2F2F7] ml-[60px]" />}
+          </div>
+        ))}
+      </IOSCard>
+    </div>
+  );
+}
+
 export default function SettingsPage() {
   return (
     <div className="pt-14 px-4">
@@ -46,31 +85,9 @@ export default function SettingsPage() {
           <UserProfile />
         </Suspense>
 
-        <div>
-          <p className="text-xs font-semibold text-[#8E8E93] uppercase tracking-wider px-1 mb-2">
-            Preferences
-          </p>
-          <IOSCard padding={false}>
-            {[
-              { icon: Bell, label: "Notifications", color: "#FF9500" },
-              { icon: Shield, label: "Privacy & Security", color: "#34C759" },
-            ].map(({ icon: Icon, label, color }, i, arr) => (
-              <div key={label}>
-                <div className="flex items-center gap-3 px-4 py-3.5">
-                  <div
-                    className="w-8 h-8 rounded-lg flex items-center justify-center"
-                    style={{ backgroundColor: color + "20" }}
-                  >
-                    <Icon className="w-4 h-4" style={{ color }} />
-                  </div>
-                  <span className="flex-1 text-[#1C1C1E] text-sm font-medium">{label}</span>
-                  <ChevronRight className="w-4 h-4 text-[#C7C7CC]" />
-                </div>
-                {i < arr.length - 1 && <div className="h-px bg-[#F2F2F7] ml-[60px]" />}
-              </div>
-            ))}
-          </IOSCard>
-        </div>
+        <Suspense fallback={<Skeleton className="h-40 rounded-2xl" />}>
+          <PreferencesSection />
+        </Suspense>
 
         <div>
           <IOSCard padding={false}>
