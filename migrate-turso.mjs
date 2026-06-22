@@ -104,4 +104,17 @@ for (const sql of statements) {
   }
 }
 
+// Column migrations (ALTER TABLE — errors on duplicate column are safe to ignore)
+console.log("\nRunning column migrations...");
+try {
+  await db.execute(`ALTER TABLE "User" ADD COLUMN "currency" TEXT NOT NULL DEFAULT 'USD'`);
+  console.log("  ✓ User.currency");
+} catch (e) {
+  if (String(e.message).includes("duplicate column")) {
+    console.log("  ~ User.currency (already exists)");
+  } else {
+    throw e;
+  }
+}
+
 console.log("\nDone — all tables and indexes are up to date on Turso.");
