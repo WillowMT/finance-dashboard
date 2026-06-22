@@ -3,7 +3,7 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { CURRENCIES } from "@/lib/constants";
-import { revalidateTag } from "next/cache";
+import { updateTag } from "next/cache";
 
 const VALID_CODES = new Set<string>(CURRENCIES.map((c) => c.code));
 
@@ -19,5 +19,5 @@ export async function updateCurrency(formData: FormData): Promise<void> {
     data: { currency },
   });
 
-  revalidateTag(`user-${session.user.id}`, "max");
+  updateTag(`user-${session.user.id}`);
 }
