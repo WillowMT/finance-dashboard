@@ -14,12 +14,14 @@ interface TransactionListProps {
   transactions: Transaction[];
   showDelete?: boolean;
   emptyMessage?: string;
+  currency: string;
 }
 
 export function TransactionList({
   transactions,
   showDelete,
   emptyMessage = "No transactions yet",
+  currency,
 }: TransactionListProps) {
   if (transactions.length === 0) {
     return (
@@ -34,7 +36,7 @@ export function TransactionList({
       {transactions.map((t, i) => (
         <div key={t.id}>
           <div className="px-4">
-            <TransactionItem transaction={t} showDelete={showDelete} />
+            <TransactionItem transaction={t} showDelete={showDelete} currency={currency} />
           </div>
           {i < transactions.length - 1 && (
             <div className="h-px bg-[#F2F2F7] ml-[68px]" />

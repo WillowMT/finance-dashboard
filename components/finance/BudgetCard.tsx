@@ -9,9 +9,10 @@ interface BudgetCardProps {
     category: { name: string; color: string; icon: string };
   };
   spent: number;
+  currency: string;
 }
 
-export function BudgetCard({ budget, spent }: BudgetCardProps) {
+export function BudgetCard({ budget, spent, currency }: BudgetCardProps) {
   const percent = Math.min((spent / budget.amount) * 100, 100);
   const over = spent > budget.amount;
   const emoji = CATEGORY_ICONS[budget.category.icon] ?? "💰";
@@ -29,7 +30,7 @@ export function BudgetCard({ budget, spent }: BudgetCardProps) {
           <div>
             <p className="text-sm font-semibold text-[#1C1C1E]">{budget.category.name}</p>
             <p className="text-xs text-[#8E8E93]">
-              {formatCurrency(spent)} of {formatCurrency(budget.amount)}
+              {formatCurrency(spent, currency)} of {formatCurrency(budget.amount, currency)}
             </p>
           </div>
         </div>
@@ -51,7 +52,7 @@ export function BudgetCard({ budget, spent }: BudgetCardProps) {
       </div>
       {over && (
         <p className="text-xs text-[#FF3B30] mt-1.5 font-medium">
-          Over budget by {formatCurrency(spent - budget.amount)}
+          Over budget by {formatCurrency(spent - budget.amount, currency)}
         </p>
       )}
     </IOSCard>

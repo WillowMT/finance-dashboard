@@ -16,9 +16,10 @@ interface Transaction {
 interface TransactionItemProps {
   transaction: Transaction;
   showDelete?: boolean;
+  currency: string;
 }
 
-export function TransactionItem({ transaction, showDelete }: TransactionItemProps) {
+export function TransactionItem({ transaction, showDelete, currency }: TransactionItemProps) {
   const isExpense = transaction.type === "EXPENSE";
   const emoji = CATEGORY_ICONS[transaction.category.icon] ?? "💰";
   const deleteWithId = deleteTransaction.bind(null, transaction.id);
@@ -47,7 +48,7 @@ export function TransactionItem({ transaction, showDelete }: TransactionItemProp
           )}
         >
           {isExpense ? "-" : "+"}
-          {formatCurrency(transaction.amount)}
+          {formatCurrency(transaction.amount, currency)}
         </p>
         {showDelete && (
           <form action={deleteWithId}>

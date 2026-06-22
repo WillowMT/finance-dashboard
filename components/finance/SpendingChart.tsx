@@ -19,9 +19,10 @@ interface ChartData {
 
 interface SpendingChartProps {
   data: ChartData[];
+  currency: string;
 }
 
-export function SpendingChart({ data }: SpendingChartProps) {
+export function SpendingChart({ data, currency }: SpendingChartProps) {
   return (
     <IOSCard>
       <p className="text-sm font-semibold text-[#3C3C43]/60 mb-4 uppercase tracking-wider text-xs">
@@ -47,7 +48,10 @@ export function SpendingChart({ data }: SpendingChartProps) {
               fontSize: 12,
             }}
             formatter={(value) =>
-              new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(Number(value))
+              new Intl.NumberFormat("en-US", {
+                style: "currency",
+                currency,
+              }).format(Number(value))
             }
           />
           <Bar dataKey="income" fill="#34C759" radius={[4, 4, 0, 0]} name="Income" />

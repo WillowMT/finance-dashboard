@@ -5,9 +5,10 @@ import { CATEGORY_ICONS } from "@/lib/constants";
 interface CategoryBreakdownProps {
   data: Record<string, { category: { name: string; color: string; icon: string }; total: number }>;
   totalExpenses: number;
+  currency: string;
 }
 
-export function CategoryBreakdown({ data, totalExpenses }: CategoryBreakdownProps) {
+export function CategoryBreakdown({ data, totalExpenses, currency }: CategoryBreakdownProps) {
   const sorted = Object.values(data).sort((a, b) => b.total - a.total);
 
   if (sorted.length === 0) {
@@ -36,7 +37,7 @@ export function CategoryBreakdown({ data, totalExpenses }: CategoryBreakdownProp
                 </div>
                 <div className="text-right">
                   <span className="text-sm font-semibold text-[#1C1C1E]">
-                    {formatCurrency(total)}
+                    {formatCurrency(total, currency)}
                   </span>
                   <span className="text-xs text-[#8E8E93] ml-1.5">
                     {Math.round(percent)}%
