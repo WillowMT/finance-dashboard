@@ -5,7 +5,7 @@ import { db } from "@/lib/db";
 import { CURRENCIES } from "@/lib/constants";
 import { revalidateTag } from "next/cache";
 
-const VALID_CODES = new Set(CURRENCIES.map((c) => c.code));
+const VALID_CODES = new Set<string>(CURRENCIES.map((c) => c.code));
 
 export async function updateCurrency(formData: FormData): Promise<void> {
   const session = await auth();
