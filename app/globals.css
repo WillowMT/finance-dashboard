@@ -15,7 +15,6 @@
 html {
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
     "Helvetica Neue", sans-serif;
-  -webkit-tap-highlight-color: transparent;
   overscroll-behavior: none;
 }
 
@@ -24,6 +23,38 @@ body {
   color: #1C1C1E;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Prevent accidental browser interactions in the installed iOS PWA. */
+:where(body, body *) {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+:where(img) {
+  -webkit-user-drag: none;
+}
+
+/* Preserve selection and native copy actions where text is intentional. */
+:where(
+  input,
+  textarea,
+  [contenteditable]:not([contenteditable="false"]),
+  [contenteditable]:not([contenteditable="false"]) *,
+  code,
+  code *,
+  pre,
+  pre *,
+  .copyable,
+  .copyable *,
+  .prose,
+  .prose *
+) {
+  -webkit-touch-callout: default;
+  -webkit-user-select: text;
+  user-select: text;
 }
 
 .pb-safe {
