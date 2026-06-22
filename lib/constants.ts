@@ -23,3 +23,21 @@ export const CATEGORY_ICONS: Record<string, string> = {
   Banknote: "💵",
   MoreHorizontal: "•••",
 };
+
+export const CURRENCIES = [
+  { code: "USD", symbol: "$",   label: "US Dollar" },
+  { code: "EUR", symbol: "€",   label: "Euro" },
+  { code: "GBP", symbol: "£",   label: "British Pound" },
+  { code: "JPY", symbol: "¥",   label: "Japanese Yen" },
+  { code: "CNY", symbol: "¥",   label: "Chinese Yuan" },
+  { code: "INR", symbol: "₹",   label: "Indian Rupee" },
+  { code: "SGD", symbol: "S$",  label: "Singapore Dollar" },
+  { code: "MYR", symbol: "RM",  label: "Malaysian Ringgit" },
+  { code: "THB", symbol: "฿",   label: "Thai Baht" },
+  { code: "AUD", symbol: "A$",  label: "Australian Dollar" },
+  { code: "CAD", symbol: "C$",  label: "Canadian Dollar" },
+  { code: "CHF", symbol: "Fr",  label: "Swiss Franc" },
+  { code: "KRW", symbol: "₩",   label: "South Korean Won" },
+  { code: "HKD", symbol: "HK$", label: "Hong Kong Dollar" },
+  { code: "MMK", symbol: "K",   label: "Myanmar Kyat" },
+] as const;

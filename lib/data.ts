@@ -115,3 +115,13 @@ export async function getLast6MonthsData(userId: string) {
   );
   return results;
 }
+
+export async function getUserCurrency(userId: string): Promise<string> {
+  cacheTag(`user-${userId}`);
+  cacheLife("hours");
+  const user = await db.user.findUnique({
+    where: { id: userId },
+    select: { currency: true },
+  });
+  return user?.currency ?? "USD";
+}
