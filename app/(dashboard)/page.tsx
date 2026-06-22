@@ -15,6 +15,7 @@ async function DashboardContent() {
   const now = new Date();
   const month = now.getMonth() + 1;
   const year = now.getFullYear();
+  const firstName = session.user.name?.split(" ")[0] ?? "there";
 
   const [stats, recent, currency] = await Promise.all([
     getMonthlyStats(session.user.id, month, year),
@@ -26,6 +27,10 @@ async function DashboardContent() {
 
   return (
     <div className="space-y-6">
+      <IOSPageHeader
+        title={`Hi, ${firstName} 👋`}
+        subtitle="Here's your financial summary"
+      />
       <BalanceCard
         balance={stats.balance}
         income={stats.income}
@@ -50,16 +55,9 @@ async function DashboardContent() {
   );
 }
 
-export default async function DashboardPage() {
-  const session = await auth();
-  const firstName = session?.user?.name?.split(" ")[0] ?? "there";
-
+export default function DashboardPage() {
   return (
     <div className="pt-14">
-      <IOSPageHeader
-        title={`Hi, ${firstName} 👋`}
-        subtitle="Here's your financial summary"
-      />
       <Suspense fallback={<DashboardSkeleton />}>
         <DashboardContent />
       </Suspense>
