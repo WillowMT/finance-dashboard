@@ -29,7 +29,9 @@ export default function TransactionsPage() {
     <div className="pt-14">
       <IOSPageHeader title="Transactions" />
       <Suspense fallback={<TransactionsSkeleton />}>
+      <div className="px-4">
         <TransactionContent />
+      </div>
       </Suspense>
     </div>
   );
