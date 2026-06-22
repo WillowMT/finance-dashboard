@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import { auth } from "@/lib/auth";
-import { getMonthlyStats, getTransactions } from "@/lib/data";
+import { getMonthlyStats, getTransactions, getUserCurrency } from "@/lib/data";
 import { BalanceCard } from "@/components/finance/BalanceCard";
 import { TransactionList } from "@/components/finance/TransactionList";
 import { DashboardSkeleton } from "@/components/finance/DashboardSkeleton";
@@ -16,9 +16,10 @@ async function DashboardContent() {
   const month = now.getMonth() + 1;
   const year = now.getFullYear();
 
-  const [stats, recent] = await Promise.all([
+  const [stats, recent, currency] = await Promise.all([
     getMonthlyStats(session.user.id, month, year),
     getTransactions(session.user.id, 5),
+    getUserCurrency(session.user.id),
   ]);
 
   const monthName = now.toLocaleDateString("en-US", { month: "long", year: "numeric" });
@@ -30,6 +31,7 @@ async function DashboardContent() {
         income={stats.income}
         expenses={stats.expenses}
         month={monthName}
+        currency={currency}
       />
 
       <div className="px-4">
@@ -42,7 +44,7 @@ async function DashboardContent() {
             See all <ChevronRight className="w-4 h-4" />
           </Link>
         </div>
-        <TransactionList transactions={recent} />
+        <TransactionList transactions={recent} currency={currency} />
       </div>
     </div>
   );

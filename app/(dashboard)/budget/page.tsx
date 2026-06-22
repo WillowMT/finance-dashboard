@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import { auth } from "@/lib/auth";
-import { getBudgets, getMonthlyStats, getCategories } from "@/lib/data";
+import { getBudgets, getMonthlyStats, getCategories, getUserCurrency } from "@/lib/data";
 import { BudgetCard } from "@/components/finance/BudgetCard";
 import { BudgetSkeleton } from "@/components/finance/BudgetSkeleton";
 import { IOSPageHeader } from "@/components/ui/IOSPageHeader";
@@ -15,10 +15,11 @@ async function BudgetContent() {
   const year = now.getFullYear();
   const monthName = now.toLocaleDateString("en-US", { month: "long", year: "numeric" });
 
-  const [budgets, stats, categories] = await Promise.all([
+  const [budgets, stats, categories, currency] = await Promise.all([
     getBudgets(session.user.id, month, year),
     getMonthlyStats(session.user.id, month, year),
     getCategories(session.user.id),
+    getUserCurrency(session.user.id),
   ]);
 
   const spentByCategory = stats.byCategory;
@@ -34,7 +35,9 @@ async function BudgetContent() {
       ) : (
         budgets.map((budget) => {
           const spent = spentByCategory[budget.categoryId]?.total ?? 0;
-          return <BudgetCard key={budget.id} budget={budget} spent={spent} />;
+          return (
+            <BudgetCard key={budget.id} budget={budget} spent={spent} currency={currency} />
+          );
         })
       )}
     </div>

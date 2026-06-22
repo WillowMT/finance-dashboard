@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import { auth } from "@/lib/auth";
-import { getMonthlyStats, getLast6MonthsData } from "@/lib/data";
+import { getMonthlyStats, getLast6MonthsData, getUserCurrency } from "@/lib/data";
 import { SpendingChart } from "@/components/finance/SpendingChart";
 import { CategoryBreakdown } from "@/components/finance/CategoryBreakdown";
 import { AnalyticsSkeleton } from "@/components/finance/AnalyticsSkeleton";
@@ -15,18 +15,20 @@ async function AnalyticsContent() {
   const year = now.getFullYear();
   const monthName = now.toLocaleDateString("en-US", { month: "long" });
 
-  const [stats, chartData] = await Promise.all([
+  const [stats, chartData, currency] = await Promise.all([
     getMonthlyStats(session.user.id, month, year),
     getLast6MonthsData(session.user.id),
+    getUserCurrency(session.user.id),
   ]);
 
   return (
     <div className="px-4 space-y-4">
       <p className="text-sm text-[#8E8E93] px-1">Spending breakdown for {monthName}</p>
-      <SpendingChart data={chartData} />
+      <SpendingChart data={chartData} currency={currency} />
       <CategoryBreakdown
         data={stats.byCategory}
         totalExpenses={stats.expenses}
+        currency={currency}
       />
     </div>
   );
